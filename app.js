@@ -11,6 +11,9 @@ var doc = null;
 var app = express();
 app.use(express.json());
 
+
+var ADMIN_signature = "282a2202bb6a31eb327a71c1affc9648";
+
 app.use(express.urlencoded({
   extended: true
 }));
@@ -34,7 +37,18 @@ app.get("/rankrTable", async (req, res, next) => {
     res.sendStatus(500);
   }
 });
-
+app.get("/authorize", async (req, res, next) => {
+  if (isAuthorised(req)) {
+    return true;
+  }
+  return false;
+});
+app.get("/datasource", async (req, res, next) => {
+  if (isAuthorised(req)) {
+    return "https://docs.google.com/spreadsheets/d/" + sheetId + "/edit#gid=0";
+  }
+  return "";
+});
 app.post("/match", async (req, res, next) => {
   if (doc == null) {
     await loadDocument();
@@ -86,6 +100,13 @@ app.post("/crew", async (req, res, next) => {
   }
 });
 
+function isAuthorised(request) {
+  if (req.query.token === "282a2202bb6a31eb327a71c1affc9648") {
+    return true;
+  }
+  return false;
+}
+
 async function loadDocument() {
   doc = new GoogleSpreadsheet(sheetId);
   await doc.useServiceAccountAuth(credentials);
@@ -105,6 +126,12 @@ async function getSpreadSheedData() {
       dataRow.push(row._rawData[colIndex]);
     }
     if (dataRow[0] !== "") {
+      var num = parseInt(dataRow[0]);
+      if (!isNaN(num)){
+        dataRow[0]=num;
+      }else{
+        dataRow[0]=99999;
+      }
       dataSet.data.push(dataRow);
     }
   }

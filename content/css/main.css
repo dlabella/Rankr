@@ -28,6 +28,9 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
 .dataTables_wrapper .dataTables_paginate .paginate_button {
   color: white !important;
 }
+select{
+  display: block;
+}
 td{
     border-radius: 0px;
 }
