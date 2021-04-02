@@ -107,7 +107,7 @@ function winnerAutocompleted(value) {
 
 function loserAutocompleted(value) {
     var elo = getCrewELO(value);
-    $("#loaseTeamELO").val(elo);
+    $("#loserTeamELO").val(elo);
 }
 
 function getCrewELO(crew) {
