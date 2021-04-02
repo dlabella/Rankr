@@ -1,0 +1,17 @@
+{
+  "name": "rankr",
+  "version": "1.0.0",
+  "description": "Rank Management App",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "google-spreadsheet": "^3.1.15"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

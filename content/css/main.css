@@ -1,0 +1,98 @@
+table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd {
+    background-color: #6e6e6e;
+}
+table.dataTable.display tbody tr.odd>.sorting_1, table.dataTable.order-column.stripe tbody tr.odd>.sorting_1 {
+    background-color: #454545;
+}
+table.dataTable.display tbody tr.even>.sorting_1, table.dataTable.order-column.stripe tbody tr.even>.sorting_1 {
+    background-color: #848484;
+}
+table.dataTable tbody tr{
+    background-color: #bbbbbb;
+}
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate {
+    color: #c0c0c0;
+}
+.dataTables_wrapper .dataTables_length select {
+    color: #c7c7c7;
+}
+table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.dataTable.display tbody th, table.dataTable.display tbody td {
+    border-top: 0px;
+}
+table.dataTable thead th, table.dataTable tfoot th {
+    font-weight: 300;
+}
+table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
+    background-color: #4d4b4b;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: white !important;
+}
+td{
+    border-radius: 0px;
+}
+input{
+    color: white;
+}
+main{
+    padding: 12px;
+}
+.loading{
+  display: flex;
+  align-content: center;
+  height: 100%;
+}
+.loading img{
+  margin: 0 auto;
+  align-self: center;
+  border-radius: 5px;
+}
+.modal{
+    background-color: #4a4a4a;
+}
+nav .brand-logo {
+    font-weight: bold;
+    padding-left: 12px;
+}
+body {
+    background-color: #eee;
+    transition: color 1s ease, background-color 1s ease;
+  }
+  body.dark {
+    background-color: #202123;
+    color: #fff;
+  }
+  body.dark nav {
+    background-color: #26A69A;
+  }
+  body.dark .card {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  body.dark .btn {
+    background-color: #EE6F73;
+  }
+  body.dark .divider {
+    opacity: 0.2;
+  }
+  body.dark .sidenav {
+    background-color: #2D2D31;
+  }
+  body.dark .sidenav li a:not(.subheader) {
+    color: #89B2F5;
+  }
+  body.dark .sidenav li a:not(.subheader):hover {
+    background-color: #3B4043;
+  }
+  body.dark .sidenav li a.subheader {
+    color: #9AA0A6;
+  }
+  body.dark .sidenav li a .material-icons {
+    color: #9AA0A6;
+  }
+  body.dark .collection {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  body.dark .collection .collection-item {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }

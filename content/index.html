@@ -1,0 +1,173 @@
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="css/main.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="js/rankr.js"></script>
+</head>
+
+<body class="has-fixed-sidenav dark">
+    <header>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo">RankR</a>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">Menu</i></a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="#!" class="js-reload">Reload Data</a></li>
+                    <li><a class="btn modal-trigger" data-target="match-result" class="js-result">Add Result</a></li>
+                    <li><a class="btn modal-trigger" data-target="add-crew" class="js-result">Add Crew</a></li>
+                    <li><a class="js-datasource"
+                            href="https://docs.google.com/spreadsheets/d/1Za8jT8su5c5usc5gZhaKOaIiGs1MGmQtITfBs4aQqd0/edit#gid=0"
+                            target="_blank">Data Source</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul class="sidenav" id="mobile-demo">
+            <li><a href="#!" class="js-reload">Reload Data</a></li>
+            <li><a class="btn modal-trigger" data-target="match-result" class="js-result">Add Result</a></li>
+            <li><a class="btn modal-trigger" data-target="add-crew" class="js-result">Add Crew</a></li>
+            <li><a class="js-datasource"
+                    href="https://docs.google.com/spreadsheets/d/1Za8jT8su5c5usc5gZhaKOaIiGs1MGmQtITfBs4aQqd0/edit#gid=0"
+                    target="_blank">Data Source</a></li>
+        </ul>
+    </header>
+    <main>
+        <div class="row">
+            <div id="tableLoading" class="loading col s12 ">
+                <img src="/img/loading.gif" class="z-depth-5">
+            </div>
+        </div>
+        <table id="rankrTable" class="display" style="width: 100%; display: none">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tag</th>
+                    <th>Name</th>
+                    <th>Wins</th>
+                    <th>Losses</th>
+                    <th>ELO</th>
+                    <th>Rank</th>
+                </tr>
+            </thead>
+        </table>
+        </div>
+    </main>
+    <div id="authorize" class="modal dark">
+        <div class="modal-content">
+            <h4>Authorize</h4>
+            <form id="authorize-form">
+                <div class="input-field col s12">
+                    <input name="token" placeholder="Token" id="token" type="text" class="validate" />
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+            <a id="authorize-submit" href="#!" class="modal-close waves-effect waves-green btn-flat">Submit</a>
+        </div>
+    </div>
+    <div id="add-crew" class="modal dark">
+        <div class="modal-content">
+            <h4>New Crew</h4>
+            <form id="add-crew-form">
+                <div class="container">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input name="crewName" placeholder="Name" id="crewName" type="text" class="validate" />
+                            <label for="crewName">Name</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input name="crewTag" placeholder="tag" id="crewTag" type="text" class="validate" />
+                            <label for="crewtag">Tag</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+            <a id="add-crew-submit" href="#!" class="modal-close waves-effect waves-green btn-flat">Submit</a>
+        </div>
+    </div>
+    <div id="match-result" class="modal dark">
+        <div class="modal-content">
+            <h4>Match Result</h4>
+            <form id="match-result-form">
+                <div class="container">
+                    <div class="row">
+                        <div class="input-field col s5">
+                            <input name="winnerTeam" placeholder="Winner" id="winnerTeam" type="text"
+                                class="validate autocomplete crew" />
+                            <label for="winnerTeam">Winner Tag</label>
+                        </div>
+                        <div class="input-field col s2">
+                            <span>Vs</span>
+                        </div>
+                        <div class="input-field col s5">
+                            <input name="loserTeam" placeholder="loser" id="loserTeam" type="text"
+                                class="validate autocomplete crew" />
+                            <label for="loserTeam">Loser Tag</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s2">
+                            <input name="winnerTeamELO" placeholder="--" id="winnerTeamELO" type="text" class="validate"
+                                readonly />
+                            <label for="winnerTeamELO">ELO</label>
+                        </div>
+                        <div class="input-field col s1">
+                            <input name="winnerTeamRank" placeholder="--" id="winnerTeamRank" type="text" class="validate"
+                                readonly />
+                            <label for="winnerTeamRank">Rank</label>
+                        </div>
+                        <div class="input-field col s1">
+                            <input name="winnerTeamIncrease" placeholder="--" id="winnerTeamIncrease" type="text"
+                                class="validate" readonly />
+                            <label for="winnerTeamIncrease">Increase</label>
+                        </div>
+                        <div class="input-field col s1">
+                            <input name="winnerTeamUpset" placeholder="-" id="winnerTeamUpset" type="text"
+                                class="validate" readonly />
+                            <label for="winnerTeamUpset">Upset</label>
+                        </div>
+                        <div class="input-field col s2">
+
+                        </div>
+                        <div class="input-field col s4">
+                            <input name="loaseTeamELO" placeholder="--" id="loaseTeamELO" type="text" class="validate"
+                                readonly />
+                            <label for="loaseTeamELO">ELO</label>
+                        </div>
+                        <div class="input-field col s1">
+                            <input name="loserTeamRank" placeholder="--" id="loserTeamRank" type="text" class="validate"
+                                readonly />
+                            <label for="loserTeamRank">Rank</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s4">
+                            <input name="stockDiff" placeholder="Result" id="stockDiff" type="text" class="validate" />
+                            <label for="stockDiff">Stock Diff</label>
+                        </div>
+                        <div class="input-field col s8">
+                            <input name="matchDate" placeholder="Date" id="matchDate" type="text" class="datepicker" />
+                            <label for="matchDate">Match Date</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+            <a id="match-result-submit" href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+    </div>
+</body>
+
+</html>
