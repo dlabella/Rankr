@@ -11,9 +11,6 @@ var doc = null;
 var app = express();
 app.use(express.json());
 
-
-var ADMIN_signature = "282a2202bb6a31eb327a71c1affc9648";
-
 app.use(express.urlencoded({
   extended: true
 }));
