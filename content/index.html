@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="css/main.css" />
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-    <script src="js/rankr.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.1/dist/chart.min.js"></script>
+    <script src="js/scoreBot.js"></script>
+    <script src="js/crewInfo.js"></script>
 </head>
 
 <body class="has-fixed-sidenav dark">
@@ -43,9 +45,10 @@
                 <img src="/img/loading.gif" class="z-depth-5">
             </div>
         </div>
-        <table id="rankrTable" class="display" style="width: 100%; display: none">
+        <table id="scoreTable" class="display" style="width: 100%; display: none">
             <thead>
                 <tr>
+                    <th>id</th>
                     <th>#</th>
                     <th>Tag</th>
                     <th>Name</th>
@@ -58,20 +61,6 @@
         </table>
         </div>
     </main>
-    <div id="authorize" class="modal dark">
-        <div class="modal-content">
-            <h4>Authorize</h4>
-            <form id="authorize-form">
-                <div class="input-field col s12">
-                    <input name="token" placeholder="Token" id="token" type="text" class="validate" />
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
-            <a id="authorize-submit" href="#!" class="modal-close waves-effect waves-green btn-flat">Submit</a>
-        </div>
-    </div>
     <div id="add-crew" class="modal dark">
         <div class="modal-content">
             <h4>New Crew</h4>
@@ -79,16 +68,52 @@
                 <div class="container">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input name="crewName" placeholder="Name" id="crewName" type="text" class="validate" />
+                            <input name="crewName" placeholder="Name" id="crewName" type="text" class="validate" autocomplete="off" />
                             <label for="crewName">Name</label>
                         </div>
                         <div class="input-field col s12">
-                            <input name="crewTag" placeholder="Tag" id="crewTag" type="text" class="validate" />
+                            <input name="crewTag" placeholder="Tag" id="crewTag" type="text" class="validate" autocomplete="off" />
                             <label for="crewtag">Tag</label>
                         </div>
                     </div>
                 </div>
             </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+            <a id="add-crew-submit" href="#!" class="modal-close waves-effect waves-green btn-flat">Submit</a>
+        </div>
+    </div>
+    <div id="crew-info" class="modal dark">
+        <div class="modal-content">
+            <div class="row">
+                <div class="col s1 center">
+                    <h6>#</h6>
+                    <h4 id="crew-info-position"></h4>
+                </div>
+                <div class="col s5 center">
+                    <h6 id="crew-info-tag">Tag</h6>
+                    <h4 id="crew-info-name"></h4>
+                </div>
+                <div class="col s2 center">
+                    <h6>Rank</h6>
+                    <h4 id="crew-info-rank">Bronze</h4>
+                </div>
+                <div class="col s2 center">
+                    <h6>ELO</h6>
+                    <h4 id="crew-info-elo">1200</h4>
+                </div>
+                <div class="col s1 center">
+                    <h6>Wins</h6>
+                    <h4 id="crew-info-wins">1</h4>
+                </div>
+                <div class="col s1 center">
+                    <h6>Losses</h6>
+                    <h4 id="crew-info-losses">1</h4>
+                </div>
+            </div>
+            <div id="crew-info-loading">Loading ...</div>
+            <canvas id="crewInfoElo" width="400" height="400"></canvas>
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
@@ -102,7 +127,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="input-field col s5">
-                            <input name="winnerTeam" placeholder="Winner" id="winnerTeam" type="text"
+                            <input name="winnerTeam" placeholder="Winner" id="winnerTeam" type="text" autocomplete="off" 
                                 class="validate autocomplete crew" />
                             <label for="winnerTeam">Winner Tag</label>
                         </div>
@@ -110,29 +135,29 @@
                             <span>Vs</span>
                         </div>
                         <div class="input-field col s5">
-                            <input name="loserTeam" placeholder="Loser" id="loserTeam" type="text"
+                            <input name="loserTeam" placeholder="Loser" id="loserTeam" type="text" autocomplete="off" 
                                 class="validate autocomplete crew" />
                             <label for="loserTeam">Loser Tag</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s2">
-                            <input name="winnerTeamELO" placeholder="--" id="winnerTeamELO" type="text" class="validate"
+                            <input name="winnerTeamELO" placeholder="--" id="winnerTeamELO" type="text" class="validate" autocomplete="off" 
                                 readonly />
                             <label for="winnerTeamELO">ELO</label>
                         </div>
                         <div class="input-field col s1">
-                            <input name="winnerTeamRank" placeholder="--" id="winnerTeamRank" type="text" class="validate"
-                                readonly />
+                            <input name="winnerTeamRank" placeholder="--" id="winnerTeamRank" type="text" autocomplete="off" 
+                                class="validate" readonly />
                             <label for="winnerTeamRank">Rank</label>
                         </div>
                         <div class="input-field col s1">
-                            <input name="winnerTeamIncrease" placeholder="--" id="winnerTeamIncrease" type="text"
+                            <input name="winnerTeamIncrease" placeholder="--" id="winnerTeamIncrease" type="text" autocomplete="off" 
                                 class="validate" readonly />
                             <label for="winnerTeamIncrease">Increase</label>
                         </div>
                         <div class="input-field col s1">
-                            <input name="winnerTeamUpset" placeholder="-" id="winnerTeamUpset" type="text"
+                            <input name="winnerTeamUpset" placeholder="-" id="winnerTeamUpset" type="text" autocomplete="off" 
                                 class="validate" readonly />
                             <label for="winnerTeamUpset">Upset</label>
                         </div>
@@ -140,23 +165,23 @@
 
                         </div>
                         <div class="input-field col s4">
-                            <input name="loaseTeamELO" placeholder="--" id="loaseTeamELO" type="text" class="validate"
+                            <input name="loserTeamELO" placeholder="--" id="loserTeamELO" type="text" class="validate" autocomplete="off" 
                                 readonly />
-                            <label for="loaseTeamELO">ELO</label>
+                            <label for="loserTeamELO">ELO</label>
                         </div>
                         <div class="input-field col s1">
-                            <input name="loserTeamRank" placeholder="--" id="loserTeamRank" type="text" class="validate"
+                            <input name="loserTeamRank" placeholder="--" id="loserTeamRank" type="text" class="validate" autocomplete="off" 
                                 readonly />
                             <label for="loserTeamRank">Rank</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s4">
-                            <input name="stockDiff" placeholder="Result" id="stockDiff" type="text" class="validate" />
+                            <input name="stockDiff" placeholder="Result" id="stockDiff" type="text" class="validate" autocomplete="off" />
                             <label for="stockDiff">Stock Diff</label>
                         </div>
                         <div class="input-field col s8">
-                            <input name="matchDate" placeholder="Date" id="matchDate" type="text" class="datepicker" />
+                            <input name="matchDate" placeholder="Date" id="matchDate" type="text" class="datepicker" autocomplete="off"  />
                             <label for="matchDate">Match Date</label>
                         </div>
                     </div>
